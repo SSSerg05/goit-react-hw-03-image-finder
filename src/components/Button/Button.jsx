@@ -6,37 +6,36 @@ export default class Button extends Component {
     hidden: "hidden",
   }
 
+  constructor({ selector, name, nameDisable, isHidden = false }) {
+    this.button = this.getButton(selector)
+    this.name = name;
+    this.nameDisable = nameDisable;
+
+    isHidden && this.hide();
+    // isHidden = true && this.hide() -> true && true -> this.hide()
+    // isHidden = true && this.hide() -> false && true -> false
+  }
+
   state = {
     selector: null,
     name: "",
-    nameEvent: "",
-    isHidden: true,
+    nameDisable: "",
+    isHidden: false,
   } 
   
-
-
-  // constructor({ selector, name, nameDisable, isHidden = false }) {
-  //   this.button = this.getButton(selector)
-  //   this.name = name;
-  //   this.nameDisable = nameDisable;
-
-  //   isHidden && this.hide();
-  //   // isHidden = true && this.hide() -> true && true -> this.hide()
-  //   // isHidden = true && this.hide() -> false && true -> false
-  // }
-
+  
   
   getButton(selector) {
     return document.querySelector(selector)
   }
 
   hide() {
-    this.button.classList.add(Buttons.classes.hidden);
+    this.button.classList.add(Button.classes.hidden);
 
   }
 
   show() {
-    this.button.classList.remove(Buttons.classes.hidden);
+    this.button.classList.remove(Button.classes.hidden);
   }
 
   disable() {
@@ -47,6 +46,14 @@ export default class Button extends Component {
   enable() {
     this.button.disabled = false;
     this.button.textContent = this.name;
+  }
+
+  render() { 
+    const { name } = this.state;
+
+    return (
+      <button type="button">{ name }</button>
+    )
   }
 
 }
