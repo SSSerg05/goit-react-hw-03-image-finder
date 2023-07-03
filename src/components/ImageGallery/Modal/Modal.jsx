@@ -1,10 +1,16 @@
+import React, { Component } from "react";
+import { boxModal } from "./Modal.slyled";
 
-export const Modal = ({src, alt }) => {
-  return (
+export class Modal extends Component {
+  
+  
+  render() {
     <div className="overlay">
-      <div className="modal">
-        <img src={ src } alt={ alt } />
-      </div>
+      <boxModal className="modal">
+        <img src={src} alt={alt} />
+        {this.props.children}
+        
+      </boxModal>
     </div>
-  );
+  };
 }

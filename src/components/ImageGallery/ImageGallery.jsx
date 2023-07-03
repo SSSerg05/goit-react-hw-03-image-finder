@@ -7,13 +7,15 @@ export const ImageGallery = ({ gallery }) => {
     <ul className="gallery">
       {
         gallery.map(item =>
-          <ImageGalleryItem
-            id={ gallery.id }
-            src={ gallery.previewWidth }
-            alt={ gallery.tags }
-          />)
+          <li key={gallery.id}>
+            <ImageGalleryItem
+              id={ gallery.id }
+              src={ gallery.previewWidth }
+              alt={ gallery.tags }
+            />
+          </li>
+        )
       }
     </ul>
   );
-  
 }

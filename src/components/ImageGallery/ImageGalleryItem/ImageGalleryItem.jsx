@@ -3,9 +3,9 @@
 export const ImageGalleryItem = ({ id, src, alt }) => { 
 
   return (
-    <li class="gallery-item" key={ id }>
+    <div className="gallery-item">
       <img src={ src } alt={ alt } />
-    </li>
+    </div>
   );
   
 }
