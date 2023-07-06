@@ -10,7 +10,7 @@ const API_KEY = '36214966-0d101d8d6f502ad642532aad3';
 export class App extends Component {
   
   state = {
-    imagesGalery: dataGallery.hits,
+    imagesGallery: dataGallery.hits,
     showModal: false,
     loader: false,
   }
@@ -22,13 +22,13 @@ export class App extends Component {
   }
 
   render() {
-    const { imagesGalery, showModal, loader } = this.state; 
+    const { imagesGallery, showModal, loader } = this.state; 
 
     return (
       <div>
         {showModal && <Modal />}
         <ImageGallery
-          gallery={imagesGalery}
+          gallery={imagesGallery}
         />
       </div>
     );

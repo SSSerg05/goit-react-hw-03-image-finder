@@ -1,7 +1,5 @@
 import styled from "@emotion/styled";
 
-export const boxModal = styled.div`
+export const BoxModal = styled.div`
   background-color: gray;
-  width: 600px;
-  height: 400px;
 `
