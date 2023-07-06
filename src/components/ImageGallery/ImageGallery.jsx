@@ -2,16 +2,18 @@ import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem"
 
 
 export const ImageGallery = ({ gallery }) => { 
+  const {id, previewWidth, tags} = gallery
+
 
   return (
     <ul className="gallery">
       {
-        gallery.map(item =>
-          <li key={gallery.id}>
+        gallery.map(item => 
+          <li key={id}>
             <ImageGalleryItem
-              id={ gallery.id }
-              src={ gallery.previewWidth }
-              alt={ gallery.tags }
+              id={id}
+              src={previewWidth}
+              alt={tags}
             />
           </li>
         )
