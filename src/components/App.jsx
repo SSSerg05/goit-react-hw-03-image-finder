@@ -23,10 +23,12 @@ export class App extends Component {
 
   render() {
     const { imagesGallery, showModal } = this.state; 
-    console.log(imagesGallery);
 
     return (
       <div>
+        <button type="button" onClick={this.toggleModal}>
+          Open
+        </button>
         {showModal && <Modal />}
         <ImageGallery
           gallery={imagesGallery}
