@@ -26,12 +26,18 @@ export class App extends Component {
 
     return (
       <div>
-        <button type="button" onClick={this.toggleModal}>
+        <button type="button" onClick={ this.toggleModal }>
           Open
         </button>
-        {showModal && <Modal />}
+        {showModal && (
+          <Modal onClose={ this.toggleModal }> 
+            <button type="button" onClick={ this.toggleModal }>
+              Close
+            </button>
+          </Modal>
+        )}
         <ImageGallery
-          gallery={imagesGallery}
+          gallery={ imagesGallery }
         />
       </div>
     );

@@ -13,26 +13,41 @@ export class Modal extends Component {
     alt: ""
   }
 
-  toggleModal = () => { 
-    
-  }
-
 
   componentDidMount() {
-    console.log('Open modal didMount');
+    // console.log('Open modal didMount');
+    window.addEventListener('keydown', this.handleKeyDown)
+
   }
 
 
   componentWillUnmount() {
-    console.log('close modal willUnmount');
+    // console.log('close modal willUnmount');
+    window.removeEventListener('keydown', this.handleKeyDown)
+  }
 
+
+    // close modal for press in ESC
+  handleKeyDown = e => {
+    if (e.code === 'Escape') {
+      // console.log("You press ESC");
+      this.props.onClose();
+    }
+  }
+
+  
+  // close modal for click in backdrop
+  handleBackdropClick = e => { 
+    if (e.currentTarget === e.target) { 
+       this.props.onClose();
+    }
   }
 
 
   render() {
     const { src, alt } = this.state;
     return createPortal(
-      <div className="Overlay">
+      <div className="Overlay" onClick={ this.handleBackdropClick }>
         <BoxModal>
           its modal window
           
@@ -40,10 +55,6 @@ export class Modal extends Component {
 
           { this.props.children }
         
-          
-          <button type="button" onClick={this.toggleModal}>
-            Close
-          </button>
         </BoxModal>
       </div>
     , modalRoot)
