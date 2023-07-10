@@ -1,14 +1,10 @@
-
+import { Form } from "./Form/Form";
 
 export const Searchbar = ({ }) => { 
 
   return (
     <header className="searchbar">
-      <form className="form">
-
-
-
-      </form>
+      <Form />
     </header>
   );
   
