@@ -8,7 +8,7 @@ export class Form extends Component {
 
 
   onSubmit = () => { 
-    this.state.strSearch = ""
+    this.state.setState({ strSearch: "" })
     console.log("Строка пошуку");
   }
 
@@ -20,12 +20,12 @@ export class Form extends Component {
             className="input"
             type="text"
             name="strSearch"
-            autocomplete="off"
-            autofocus
+            // autocomplete="off"
+            // autofocus
             placeholder="Search images and photos"
           />
         
-        <button type="submit" class="button">
+        <button type="submit" className="button">
           <span className="button-label" onSubmit={this.onSubmit}>Search</span>
         </button>
       </form>

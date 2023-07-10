@@ -1,6 +1,6 @@
 import { Form } from "./Form/Form";
 
-export const Searchbar = ({ }) => { 
+export const Searchbar = () => { 
 
   return (
     <header className="searchbar">

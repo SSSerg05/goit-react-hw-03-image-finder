@@ -9,7 +9,7 @@ export const ImageGallery = ({ gallery }) => {
         gallery.map(item => 
           <li key={item.id}>
             <ImageGalleryItem
-              src={item.previewWidth}
+              src={item.previewURL}
               alt={item.tags}
             />
           </li>
