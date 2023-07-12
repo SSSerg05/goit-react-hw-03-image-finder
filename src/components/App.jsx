@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import { ToastContainer } from "react-toastify" 
 
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery} from "./ImageGallery/ImageGallery"
@@ -35,10 +36,7 @@ export class App extends Component {
     fetch(url)
       .then(res => res.json())
       .then(imagesGallery => this.setState({ imagesGallery }))
-      // .catch(() => {
-      //   const data = dataGallery.hits;
-      //   this.setState({ imagesGallery: data })
-      // })
+             
       .finally(() => this.setState({ loading: false }));
   }
   
@@ -70,16 +68,20 @@ export class App extends Component {
     this.total = 0;
   }
 
+  handleFormSubmit = searchQuery => { 
+    this.setState({ searchQuery })
+  }
+
   render() {
     const { imagesGallery, showModal, loading } = this.state; 
 
     return (
       <div>
-        <Searchbar />
+        <Searchbar onSubmit={ this.handleFormSubmit } />
 
-        <button type="button" onClick={this.toggleModal}>
+        {/* <button type="button" onClick={this.toggleModal}>
           Open
-        </button>
+        </button> */}
         
         {loading && <h2>Loading</h2>}
         
