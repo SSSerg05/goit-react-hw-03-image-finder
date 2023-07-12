@@ -13,9 +13,9 @@ const API_KEY = '36214966-0d101d8d6f502ad642532aad3';
 export class App extends Component {
   
   state = {
-    imagesGallery: dataGallery.hits,
+    imagesGallery: null, // dataGallery.hits,
     showModal: false,
-    loader: false,
+    loading: false,
     page: 0,
     total: 0,
   }
@@ -27,17 +27,20 @@ export class App extends Component {
     }))
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     const url = URL + '?key=' + API_KEY + '&q=cat';
     console.log(url);
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
+    
     fetch(url)
       .then(res => res.json())
-      .then(console.log());
+      .then(imagesGallery => this.setState({ imagesGallery }))
+      // .catch(() => {
+      //   const data = dataGallery.hits;
+      //   this.setState({ imagesGallery: data })
+      // })
+      .finally(() => this.setState({ loading: false }));
   }
-      // .then(res => this.setState(({ imagesGallery }) => ({
-      //   imagesGallery: res
-      // })))
   
   // async getPictures() {
     
@@ -68,7 +71,7 @@ export class App extends Component {
   }
 
   render() {
-    const { imagesGallery, showModal } = this.state; 
+    const { imagesGallery, showModal, loading } = this.state; 
 
     return (
       <div>
@@ -77,6 +80,14 @@ export class App extends Component {
         <button type="button" onClick={this.toggleModal}>
           Open
         </button>
+        
+        {loading && <h2>Loading</h2>}
+        
+        {imagesGallery && <ImageGallery
+            gallery={ imagesGallery }
+          />
+        }
+
         {showModal && (
           <Modal onClose={ this.toggleModal }> 
             <button type="button" onClick={ this.toggleModal }>
@@ -84,9 +95,6 @@ export class App extends Component {
             </button>
           </Modal>
         )}
-        <ImageGallery
-          gallery={ imagesGallery }
-        />
       </div>
     );
 
