@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImSearch } from 'react-icon/im';
+import { ImSearch } from 'react-icons/im';
 import { toast } from 'react-toastify'
 
 export class Form extends Component { 
@@ -21,7 +21,7 @@ export class Form extends Component {
       return;
     }
 
-    this.props.onSubmit.state.searchQuery
+    this.props.onSubmit.state.searchQuery;
     this.state.setState({ searchQuery: "" })
   }
 
@@ -34,7 +34,7 @@ export class Form extends Component {
             className="input"
             type="text"
             name="searchQuery"
-            value={searchQuery}
+            value={ searchQuery }
             onChange={ this.handleChangeSearchQuery }
             // autocomplete="off"
             // autofocus
