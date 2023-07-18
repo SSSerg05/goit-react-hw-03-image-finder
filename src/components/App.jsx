@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { ToastContainer } from "react-toastify" 
+import axios from 'axios';
 
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery} from "./ImageGallery/ImageGallery"
 import  dataGallery from "../data/gallery.json"
 import { Modal } from "./ImageGallery/Modal/Modal";
+
 
 // import axios = from "axios/dist/axios.min.js"; // node
 
