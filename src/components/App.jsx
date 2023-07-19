@@ -13,7 +13,8 @@ export class App extends Component {
   state = {
     imagesGallery: null, // dataGallery.hits,
     showModal: false,
-    loading: false,
+    isLoading: false,
+    error: null,
     page: 0,
     total: 0,
   }
@@ -36,10 +37,10 @@ export class App extends Component {
       this.incrementPage();
 
     } catch (error) {
-      
+      this.setState({ error: `Server don't repeate. ` + error });
     }
     finally {
-      this.setState({ loading: false });
+      this.setState({ isLoading: false });
 
     }
   }
