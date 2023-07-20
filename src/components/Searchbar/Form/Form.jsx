@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { ImSearch } from 'react-icons/im';
-import { toast } from 'react-toastify'
 
 export class Form extends Component { 
 
@@ -18,8 +20,8 @@ export class Form extends Component {
     event.preventDefault();
 
     if (this.state.searchQuery.trim() === '') {
-      alert('No search query')
-      return;
+      return toast.error('No search query');
+      
     }
 
     this.props.onSubmit(this.state.searchQuery);
@@ -46,6 +48,17 @@ export class Form extends Component {
           <ImSearch />
           {/* <span className="button-label" onSubmit={this.handleSubmit}>Search</span> */}
         </button>
+        <ToastContainer
+          position="top-right"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"/>
       </form>
     )
   }
