@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 
-import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery} from "./ImageGallery/ImageGallery"
 //import  dataGallery from "../data/gallery.json"
-import { Form } from "./Searchbar/Form/Form";
+import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./ImageGallery/Modal/Modal";
 import { fetchData } from '../services/Api';
 
@@ -32,9 +31,10 @@ export class App extends Component {
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
     try {
 
-      const data = await fetchData('cat');
-      this.setState({ imagesGallery: data.hits });
-      this.setState({ total: data.totalHits });
+      const responce = await fetchData(this.state.searchQuery);
+      console.log(responce.hits);
+      this.setState({ imagesGallery: responce.hits });
+      this.setState({ total: responce.totalHits });
       this.incrementPage();
 
     } catch (error) {
@@ -44,6 +44,10 @@ export class App extends Component {
       this.setState({ isLoading: false });
 
     }
+  }
+
+  componentDidUpdate() {
+
   }
 
   incrementPage() {
@@ -60,11 +64,11 @@ export class App extends Component {
   }
 
   render() {
-    const { imagesGallery, showModal, loading } = this.state; 
+    const { imagesGallery, showModal, loading, searchQuery } = this.state; 
 
     return (
       <div>
-        <Form onSubmit={ this.handleFormSubmit } />
+        <Searchbar onSubmit={ this.handleFormSubmit } />
 
         {/* <button type="button" onClick={this.toggleModal}>
           Open
@@ -72,7 +76,7 @@ export class App extends Component {
         
         {loading && <h2>Loading</h2>}
         
-        {imagesGallery && <ImageGallery
+        {(imagesGallery && searchQuery) && <ImageGallery
             gallery={ imagesGallery }
           />
         }
