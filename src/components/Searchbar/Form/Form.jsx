@@ -25,7 +25,7 @@ export class Form extends Component {
     }
 
     this.props.onSubmit(this.state.searchQuery);
-    this.state.setState({ searchQuery: "" })
+    this.setState({ searchQuery: "" })
   }
 
 
@@ -44,20 +44,12 @@ export class Form extends Component {
             placeholder="Search images and photos"
           />
         
-        <button type="submit" className="button">
-          <ImSearch />
-          {/* <span className="button-label" onSubmit={this.handleSubmit}>Search</span> */}
+        <button type="submit">
+          <ImSearch /> Search
         </button>
+
         <ToastContainer
-          position="top-right"
           autoClose={2500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
           theme="colored"/>
       </form>
     )
