@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { ToastContainer } from "react-toastify" 
 
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery} from "./ImageGallery/ImageGallery"
-import  dataGallery from "../data/gallery.json"
+//import  dataGallery from "../data/gallery.json"
+import { Form } from "./Searchbar/Form/Form";
 import { Modal } from "./ImageGallery/Modal/Modal";
 import { fetchData } from '../services/Api';
 
@@ -12,6 +12,7 @@ export class App extends Component {
   
   state = {
     imagesGallery: null, // dataGallery.hits,
+    searchQuery: null,
     showModal: false,
     isLoading: false,
     error: null,
@@ -63,7 +64,7 @@ export class App extends Component {
 
     return (
       <div>
-        <Searchbar onSubmit={ this.handleFormSubmit } />
+        <Form onSubmit={ this.handleFormSubmit } />
 
         {/* <button type="button" onClick={this.toggleModal}>
           Open
