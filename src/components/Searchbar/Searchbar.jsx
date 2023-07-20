@@ -1,10 +1,10 @@
 import { Form } from "./Form/Form";
 
-export const Searchbar = () => { 
+export const Searchbar = ({ handleFormSubmit }) => { 
 
   return (
     <header className="searchbar">
-      <Form />
+      <Form onSubmit={ handleFormSubmit }/>
     </header>
   );
   

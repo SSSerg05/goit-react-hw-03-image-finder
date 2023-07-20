@@ -3,6 +3,7 @@ import { ImSearch } from 'react-icons/im';
 import { toast } from 'react-toastify'
 
 export class Form extends Component { 
+
   state = {
     searchQuery : "",
   }
@@ -21,13 +22,13 @@ export class Form extends Component {
       return;
     }
 
-    this.props.onSubmit.state.searchQuery;
+    this.props.onSubmit(this.state.searchQuery);
     this.state.setState({ searchQuery: "" })
   }
 
 
   render() { 
-    const { query } = this.state;
+    const { searchQuery } = this.state;
     return (
       <form className="form" onSubmit={ this.handleSubmit }>
           <input
