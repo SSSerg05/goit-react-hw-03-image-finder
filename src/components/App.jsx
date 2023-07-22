@@ -96,7 +96,7 @@ export class App extends Component {
         
         { isLoading && <h2>Loading...</h2>}
         
-        {(imagesGallery && searchQuery) && <ImageGallery
+        {searchQuery && <ImageGallery
             gallery={ imagesGallery }
           />
         }
