@@ -44,10 +44,30 @@ export class App extends Component {
       this.setState({ isLoading: false });
 
     }
+
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate(prevProps, prevState) {
+    const prevQuery = prevProps;
+    const nextQuery = this.state.searchQuery;
 
+    if (prevQuery !== nextQuery) {
+      try {
+        this.setState({ isLoading: true });
+
+        const responce = await fetchData(this.state.searchQuery); 
+        this.setState({ imagesGallery: responce.hits });
+        this.setState({ total: responce.totalHits });
+        this.incrementPage(); 
+
+      } catch (error) {
+        this.setState({ error: `Server don't repeate. ` + error });
+      }
+      finally {
+        this.setState({ isLoading: false });
+      }
+      
+    }
   }
 
   incrementPage() {
@@ -64,7 +84,7 @@ export class App extends Component {
   }
 
   render() {
-    const { imagesGallery, showModal, loading, searchQuery } = this.state; 
+    const { imagesGallery, showModal, isLoading, searchQuery } = this.state; 
 
     return (
       <div>
@@ -74,7 +94,7 @@ export class App extends Component {
           Open
         </button> */}
         
-        {loading && <h2>Loading</h2>}
+        { isLoading && <h2>Loading...</h2>}
         
         {(imagesGallery && searchQuery) && <ImageGallery
             gallery={ imagesGallery }
