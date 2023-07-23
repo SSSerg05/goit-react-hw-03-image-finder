@@ -47,17 +47,18 @@ export class App extends Component {
 
   }
 
-  async componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevProps;
+  async componentDidUpdate(prevState) {
+    const prevQuery = prevState;
     const nextQuery = this.state.searchQuery;
+    console.log(prevQuery, nextQuery);
 
     if (prevQuery !== nextQuery) {
       try {
         this.setState({ isLoading: true });
 
-        const responce = await fetchData(this.state.searchQuery); 
-        this.setState({ imagesGallery: responce.hits });
-        this.setState({ total: responce.totalHits });
+//        const responce = await fetchData(this.state.searchQuery); 
+//        this.setState({ imagesGallery: responce.hits });
+//        this.setState({ total: responce.totalHits });
         this.incrementPage(); 
 
       } catch (error) {
