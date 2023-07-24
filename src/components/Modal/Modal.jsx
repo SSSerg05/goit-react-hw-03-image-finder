@@ -15,7 +15,6 @@ export class Modal extends Component {
   componentDidMount() {
     // console.log('Open modal didMount');
     window.addEventListener('keydown', this.handleKeyDown)
-
   }
 
 
@@ -24,6 +23,12 @@ export class Modal extends Component {
     window.removeEventListener('keydown', this.handleKeyDown)
   }
 
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.url !== this.props.url) {
+      this.setState({isLoading : false });
+    }
+  }
 
     // close modal for press in ESC
   handleKeyDown = e => {
@@ -50,13 +55,13 @@ export class Modal extends Component {
        
         <BoxModal>
 
-          { isLoading && <p>Loading</p> }
+          { !isLoading && <p>Loading...</p> }
           
-          <img src={src} alt={tags} />
+          <img src={ src } alt={ tags } />
           
-          {this.props.children}
+          { this.props.children }
           
-          <p>{tags}</p>
+          <p>{ tags }</p>
         
         </BoxModal>
         
