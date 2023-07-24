@@ -56,7 +56,7 @@ export class App extends Component {
 
   }
 
-//   async componentDidUpdate(prevState) {
+//   async componentDidUpdate(prevProps, prevState) {
 //     const prevQuery = prevState;
 //     const nextQuery = this.state.searchQuery;
 //     console.log(prevQuery, nextQuery);
@@ -89,16 +89,18 @@ export class App extends Component {
     this.total = 0;
   }
 
-  selectImage = link => { 
+
+  onSelectImage = link => { 
     this.setState({ selectedImage: link });
   }
+
 
   handleFormSubmit = searchQuery => { 
     this.setState({ searchQuery })
   }
 
   render() {
-    const { imagesGallery, selectedImage, showModal, isLoading, searchQuery } = this.state; 
+    const { imagesGallery, showModal, isLoading, searchQuery } = this.state; 
 
     return (
       <div>
@@ -112,7 +114,7 @@ export class App extends Component {
         
         { searchQuery && <ImageGallery
           gallery={ imagesGallery }
-          onSelect={ selectedImage }
+          onSelect={ this.onSelectImage }
           />
         }
 
