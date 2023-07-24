@@ -9,7 +9,7 @@ const modalRoot = document.querySelector('#modal-root');
 export class Modal extends Component {
   
   state = {
-    isLoading: false,
+    isLoading: true,
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ export class Modal extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.url !== this.props.url) {
+    if(prevProps.url !== this.props.src) {
       this.setState({isLoading : false });
     }
   }
