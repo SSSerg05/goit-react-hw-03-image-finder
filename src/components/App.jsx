@@ -31,15 +31,7 @@ export class App extends Component {
 
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
     try {
-
-      let responce = null;
-      // if (!this.searchQuery) {
-      //   responce = dataGallery;        
-      // }
-      // else { 
-        responce = await fetchData(this.state.searchQuery);
-      // }
-      
+      const  responce = await fetchData(this.state.searchQuery);
       console.log(responce.hits);
 
       this.setState({ imagesGallery: responce.hits });

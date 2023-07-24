@@ -9,8 +9,7 @@ const modalRoot = document.querySelector('#modal-root');
 export class Modal extends Component {
   
   state = {
-    src: "",
-    alt: ""
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -45,14 +44,17 @@ export class Modal extends Component {
 
   render() {
     const { src, tags } = this.props;
+    const { isLoading } = this.state;
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
         <BoxModal>
-          its modal window
+          { isLoading && <p>Loading</p> }
           
           <img src={src} alt={tags} />
-
-          { this.props.children }
+          
+          {this.props.children}
+          
+          <p>{tags}</p>
         
         </BoxModal>
       </div>
