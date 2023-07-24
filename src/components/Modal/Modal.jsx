@@ -50,6 +50,7 @@ export class Modal extends Component {
   render() {
     const { src, tags } = this.props;
     const { isLoading } = this.state;
+    
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
        
