@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { ImageGallery} from "./ImageGallery/ImageGallery"
-//import  dataGallery from "../data/gallery.json"
+import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./ImageGallery/Modal/Modal";
 import { fetchData } from '../services/Api';
@@ -32,9 +32,16 @@ export class App extends Component {
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
     try {
 
-      const responce = await fetchData(this.state.searchQuery);
-      console.log(responce.hits);
+      let responce = null;
+      if (!this.searchQuery) {
+        responce = dataGallery;        
+      }
+      else { 
+        responce = await fetchData(this.state.searchQuery);
+      }
       
+      console.log(responce.hits);
+
       this.setState({ imagesGallery: responce.hits });
       this.setState({ total: responce.totalHits });
       this.incrementPage();
@@ -82,12 +89,16 @@ export class App extends Component {
     this.total = 0;
   }
 
+  selectImage = link => { 
+    this.setState({ selectedImage: link });
+  }
+
   handleFormSubmit = searchQuery => { 
     this.setState({ searchQuery })
   }
 
   render() {
-    const { imagesGallery, showModal, isLoading, searchQuery } = this.state; 
+    const { imagesGallery, selectedImage, showModal, isLoading, searchQuery } = this.state; 
 
     return (
       <div>
@@ -100,7 +111,8 @@ export class App extends Component {
         { isLoading && <h2>Loading...</h2>}
         
         { searchQuery && <ImageGallery
-            gallery={ imagesGallery }
+          gallery={ imagesGallery }
+          onSelect={ selectedImage }
           />
         }
 
