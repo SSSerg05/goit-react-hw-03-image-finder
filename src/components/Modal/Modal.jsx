@@ -47,7 +47,9 @@ export class Modal extends Component {
     const { isLoading } = this.state;
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
+       
         <BoxModal>
+
           { isLoading && <p>Loading</p> }
           
           <img src={src} alt={tags} />
@@ -57,6 +59,7 @@ export class Modal extends Component {
           <p>{tags}</p>
         
         </BoxModal>
+        
       </div>
     , modalRoot)
   };
