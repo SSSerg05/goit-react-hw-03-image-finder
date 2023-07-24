@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import { ListGallery} from "./ImageGallery/ListGallery"
-import  dataGallery from "../data/gallery.json"
+import { ListGallery } from "./ImageGallery/ListGallery";
+// import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
 import { fetchData } from '../services/Api';
@@ -33,12 +33,12 @@ export class App extends Component {
     try {
 
       let responce = null;
-      if (!this.searchQuery) {
-        responce = dataGallery;        
-      }
-      else { 
+      // if (!this.searchQuery) {
+      //   responce = dataGallery;        
+      // }
+      // else { 
         responce = await fetchData(this.state.searchQuery);
-      }
+      // }
       
       console.log(responce.hits);
 
@@ -90,8 +90,11 @@ export class App extends Component {
   }
 
 
-  onSelectImage = link => { 
-    this.setState({ selectedImage: link });
+  onSelectImage = (link, tags) => { 
+    this.setState({
+      selectedImage: link,
+      tagsSelectedImage: tags,
+    });
     this.toggleModal();
   }
 
@@ -104,7 +107,7 @@ export class App extends Component {
     const {
       imagesGallery,
       selectedImage,
-      titleSelectedImage,
+      tagsSelectedImage,
       showModal,
       isLoading,
       searchQuery,
@@ -114,28 +117,28 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
-        {/* <button type="button" onClick={this.toggleModal}>
-          Open
-        </button> */}
-        
         { isLoading && <h2>Loading...</h2>}
         
-        { searchQuery && <ListGallery
-          gallery={ imagesGallery }
-          onSelect={ this.onSelectImage }
-          />
+        {
+          searchQuery && <ListGallery
+            gallery={ imagesGallery }
+            onSelect={ this.onSelectImage }
+            />
         }
 
-        {showModal && (
-          <Modal
-            src={ selectedImage }
-            alt={ titleSelectedImage }
-            onClose={this.toggleModal}> 
-            <button type="button" onClick={ this.toggleModal }>
-              Close
-            </button>
-          </Modal>
+        {
+          showModal && (
+            <Modal
+              src={ selectedImage }
+              tags={ tagsSelectedImage }
+              onClose={ this.toggleModal }
+            > 
+              <button type="button" onClick={ this.toggleModal }>
+                Close
+              </button>
+            </Modal>
         )}
+        
       </div>
     );
 

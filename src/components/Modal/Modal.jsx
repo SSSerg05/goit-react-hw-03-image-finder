@@ -44,13 +44,13 @@ export class Modal extends Component {
 
 
   render() {
-    const { src, alt } = this.state;
+    const { src, tags } = this.props;
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
         <BoxModal>
           its modal window
           
-          <img src={src} alt={alt} />
+          <img src={src} alt={tags} />
 
           { this.props.children }
         
