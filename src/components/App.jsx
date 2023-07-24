@@ -12,6 +12,7 @@ export class App extends Component {
   state = {
     imagesGallery: null, // dataGallery.hits,
     searchQuery: null,
+    selectedImage: null,
     showModal: false,
     isLoading: false,
     error: null,
@@ -33,6 +34,7 @@ export class App extends Component {
 
       const responce = await fetchData(this.state.searchQuery);
       console.log(responce.hits);
+      
       this.setState({ imagesGallery: responce.hits });
       this.setState({ total: responce.totalHits });
       this.incrementPage();
@@ -47,29 +49,29 @@ export class App extends Component {
 
   }
 
-  async componentDidUpdate(prevState) {
-    const prevQuery = prevState;
-    const nextQuery = this.state.searchQuery;
-    console.log(prevQuery, nextQuery);
+//   async componentDidUpdate(prevState) {
+//     const prevQuery = prevState;
+//     const nextQuery = this.state.searchQuery;
+//     console.log(prevQuery, nextQuery);
 
-    if (prevQuery !== nextQuery) {
-      try {
-        this.setState({ isLoading: true });
+//     if (prevQuery !== nextQuery) {
+//       try {
+//         this.setState({ isLoading: true });
 
-//        const responce = await fetchData(this.state.searchQuery); 
-//        this.setState({ imagesGallery: responce.hits });
-//        this.setState({ total: responce.totalHits });
-        this.incrementPage(); 
+// //        const responce = await fetchData(this.state.searchQuery); 
+// //        this.setState({ imagesGallery: responce.hits });
+// //        this.setState({ total: responce.totalHits });
+//         this.incrementPage(); 
 
-      } catch (error) {
-        this.setState({ error: `Server don't repeate. ` + error });
-      }
-      finally {
-        this.setState({ isLoading: false });
-      }
+//       } catch (error) {
+//         this.setState({ error: `Server don't repeate. ` + error });
+//       }
+//       finally {
+//         this.setState({ isLoading: false });
+//       }
       
-    }
-  }
+//     }
+//   }
 
   incrementPage() {
     this.page++;
