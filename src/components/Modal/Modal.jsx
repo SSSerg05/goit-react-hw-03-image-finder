@@ -13,7 +13,6 @@ export class Modal extends Component {
     alt: ""
   }
 
-
   componentDidMount() {
     // console.log('Open modal didMount');
     window.addEventListener('keydown', this.handleKeyDown)

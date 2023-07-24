@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import { ImageGallery} from "./ImageGallery/ImageGallery"
+import { ListGallery} from "./ImageGallery/ListGallery"
 import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
-import { Modal } from "./ImageGallery/Modal/Modal";
+import { Modal } from "./Modal/Modal";
 import { fetchData } from '../services/Api';
 
 
@@ -92,6 +92,7 @@ export class App extends Component {
 
   onSelectImage = link => { 
     this.setState({ selectedImage: link });
+    this.toggleModal();
   }
 
 
@@ -100,7 +101,14 @@ export class App extends Component {
   }
 
   render() {
-    const { imagesGallery, showModal, isLoading, searchQuery } = this.state; 
+    const {
+      imagesGallery,
+      selectedImage,
+      titleSelectedImage,
+      showModal,
+      isLoading,
+      searchQuery,
+    } = this.state; 
 
     return (
       <div>
@@ -112,14 +120,17 @@ export class App extends Component {
         
         { isLoading && <h2>Loading...</h2>}
         
-        { searchQuery && <ImageGallery
+        { searchQuery && <ListGallery
           gallery={ imagesGallery }
           onSelect={ this.onSelectImage }
           />
         }
 
         {showModal && (
-          <Modal onClose={ this.toggleModal }> 
+          <Modal
+            src={ selectedImage }
+            alt={ titleSelectedImage }
+            onClose={this.toggleModal}> 
             <button type="button" onClick={ this.toggleModal }>
               Close
             </button>

@@ -1,6 +1,6 @@
 
 
-export const ImageGalleryItem = ({ src, alt }) => { 
+export const ItemGallery = ({ src, alt }) => { 
 
   return (
     <div className="gallery-item">

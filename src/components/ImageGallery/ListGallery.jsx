@@ -1,7 +1,7 @@
-import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem"
+import { ItemGallery } from "./ItemGallery/ItemGallery"
 
 
-export const ImageGallery = ({ gallery, onSelect }) => { 
+export const ListGallery = ({ gallery, onSelect }) => { 
 
 
   return (
@@ -9,7 +9,7 @@ export const ImageGallery = ({ gallery, onSelect }) => {
       {
         gallery.map(item =>
           <li key={item.id} onClick={() => onSelect(item.largeImageURL)}>
-            <ImageGalleryItem
+            <ItemGallery
               src={item.previewURL}
               alt={item.tags}
             />
