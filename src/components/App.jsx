@@ -4,7 +4,7 @@ import { ListGallery } from "./ImageGallery/ListGallery";
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
-import { fetchData } from '../services/Api';
+import { fetchData } from '../services/API';
 
 
 export class App extends Component {
@@ -31,46 +31,50 @@ export class App extends Component {
 
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
     try {
+      this.setState({ isLoading: true });
+
       const  responce = await fetchData(this.state.searchQuery);
       console.log(responce.hits);
 
-      this.setState({ imagesGallery: responce.hits });
+      this.setState({ imagesGallery: responce.hits, isLoading: false  });
       this.setState({ total: responce.totalHits });
       this.incrementPage();
 
     } catch (error) {
-      this.setState({ error: `Server don't repeate. ` + error });
+      this.setState({ error: true, isLoading: false });
+      console.log(error);
     }
     finally {
       this.setState({ isLoading: false });
-
     }
 
   }
 
-//   async componentDidUpdate(prevProps, prevState) {
-//     const prevQuery = prevState;
-//     const nextQuery = this.state.searchQuery;
-//     console.log(prevQuery, nextQuery);
+  async componentDidUpdate(prevProps, prevState) {
+    const prevQuery = prevState.searchQuery;
+    const nextQuery = this.state.searchQuery;
 
-//     if (prevQuery !== nextQuery) {
-//       try {
-//         this.setState({ isLoading: true });
+    if (prevQuery !== nextQuery) {
+      try {
+        this.setState({ isLoading: true });
 
-// //        const responce = await fetchData(this.state.searchQuery); 
-// //        this.setState({ imagesGallery: responce.hits });
-// //        this.setState({ total: responce.totalHits });
-//         this.incrementPage(); 
+        console.log('prevQuery:', prevQuery);
+        console.log('nextQuery:', nextQuery);
 
-//       } catch (error) {
-//         this.setState({ error: `Server don't repeate. ` + error });
-//       }
-//       finally {
-//         this.setState({ isLoading: false });
-//       }
-      
-//     }
-//   }
+        const responce = await fetchData(this.state.searchQuery); 
+        this.setState({ imagesGallery: responce.hits });
+        this.setState({ total: responce.totalHits });
+        
+        this.incrementPage();
+
+      } catch (error) {
+        this.setState({ error: `Server don't repeate. ` + error });
+      }
+      finally {
+        this.setState({ isLoading: false });
+      }
+    }      
+  }
 
   incrementPage() {
     this.page++;
@@ -112,7 +116,7 @@ export class App extends Component {
         { isLoading && <h2>Loading...</h2>}
         
         {
-          searchQuery && <ListGallery
+          !isLoading && searchQuery && <ListGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />

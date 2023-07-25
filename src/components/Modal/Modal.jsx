@@ -9,12 +9,14 @@ const modalRoot = document.querySelector('#modal-root');
 export class Modal extends Component {
   
   state = {
-    isLoading: true,
+    isLoading: false,
   }
 
   componentDidMount() {
     // console.log('Open modal didMount');
-    window.addEventListener('keydown', this.handleKeyDown)
+    this.setState({ isLoading: true });
+    window.addEventListener('keydown', this.handleKeyDown);
+    this.setState({ isLoading: false });
   }
 
 
@@ -25,8 +27,13 @@ export class Modal extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.url !== this.props.src) {
-      this.setState({isLoading : false });
+    const oldProps = prevProps.src;
+    const nextProps = this.props.src;
+    console.log('oldProps', oldProps);
+    console.log('nextProps',nextProps);
+
+    if(prevProps.src !== this.props.src) {
+      this.setState({ isLoading : false });
     }
   }
 
@@ -56,13 +63,13 @@ export class Modal extends Component {
        
         <BoxModal>
 
-          { !isLoading && <p>Loading...</p> }
+          { isLoading && <p>Loading...</p> }
           
           <img src={ src } alt={ tags } />
           
-          { this.props.children }
+          { !isLoading && this.props.children }
           
-          <p>{ tags }</p>
+          <p>{ !isLoading && tags }</p>
         
         </BoxModal>
         
