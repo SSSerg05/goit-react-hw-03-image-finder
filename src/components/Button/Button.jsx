@@ -6,15 +6,15 @@ export default class Button extends Component {
     hidden: "hidden",
   }
 
-  constructor({ selector, name, nameDisable, isHidden = false }) {
-    this.button = this.getButton(selector)
-    this.name = name;
-    this.nameDisable = nameDisable;
+  // constructor({ selector, name, nameDisable, isHidden = false }) {
+  //   this.button = this.getButton(selector)
+  //   this.name = name;
+  //   this.nameDisable = nameDisable;
 
-    isHidden && this.hide();
-    // isHidden = true && this.hide() -> true && true -> this.hide()
-    // isHidden = true && this.hide() -> false && true -> false
-  }
+  //   isHidden && this.hide();
+  //   // isHidden = true && this.hide() -> true && true -> this.hide()
+  //   // isHidden = true && this.hide() -> false && true -> false
+  // }
 
   state = {
     selector: null,
@@ -52,7 +52,7 @@ export default class Button extends Component {
     const { name } = this.state;
 
     return (
-      <button type="button">{ name }</button>
+      <button className="Button" type="button">{ name }</button>
     )
   }
 

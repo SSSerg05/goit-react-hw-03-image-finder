@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { createPortal } from "react-dom";
 
-import { BoxModal } from "./Modal.slyled";
-
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -61,7 +59,7 @@ export class Modal extends Component {
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
        
-        <BoxModal>
+        <div className="BoxModal">
 
           { isLoading && <p>Loading...</p> }
           
@@ -71,7 +69,7 @@ export class Modal extends Component {
           
           <p>{ !isLoading && tags }</p>
         
-        </BoxModal>
+        </div>
         
       </div>
     , modalRoot)

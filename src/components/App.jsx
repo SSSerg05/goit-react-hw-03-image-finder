@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 
+import "../index.css"
 import { ListGallery } from "./ImageGallery/ListGallery";
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
 import { fetchData } from '../services/API';
+import Button from "./Button/Button";
 
 
 export class App extends Component {
@@ -110,8 +112,8 @@ export class App extends Component {
     } = this.state; 
 
     return (
-      <div>
-        <Searchbar onSubmit={ this.handleFormSubmit } />
+      <div className="App">
+        <Searchbar className="Searchbar" onSubmit={ this.handleFormSubmit } />
 
         { isLoading && <h2>Loading...</h2>}
         
@@ -120,6 +122,10 @@ export class App extends Component {
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />
+        }
+
+        { !isLoading && <Button></Button>
+
         }
 
         {

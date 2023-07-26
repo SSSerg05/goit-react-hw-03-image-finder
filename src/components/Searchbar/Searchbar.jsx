@@ -32,9 +32,9 @@ export class Searchbar extends Component {
   render() { 
     const { searchQuery } = this.state;
     return (
-      <form className="form" onSubmit={ this.handleSubmit }>
+      <form className="SearchForm" onSubmit={ this.handleSubmit }>
           <input
-            className="input"
+            className="SearchForm-input"
             type="text"
             name="searchQuery"
             value={ searchQuery }
@@ -44,7 +44,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
           />
         
-        <button type="submit">
+        <button className="SearchForm-button" type="submit">
           <ImSearch /> Search
         </button>
 

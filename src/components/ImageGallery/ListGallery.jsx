@@ -5,7 +5,7 @@ export const ListGallery = ({ gallery, onSelect }) => {
 
 
   return (
-    <ul className="gallery">
+    <ul className="ImageGallery">
       {
         gallery.map(item =>
           <li key={item.id} onClick={() => onSelect(item.largeImageURL, item.tags)}>
