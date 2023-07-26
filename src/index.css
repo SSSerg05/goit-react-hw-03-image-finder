@@ -175,12 +175,29 @@ img {
 }
 
 .BoxModal {
+  position: relative;
   max-width: calc(100vw - 48px);
   max-height: calc(100vh - 24px);
 }
 
+.modal-button-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border-radius: 4px;
+}
+
+.modal-title {
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  width: calc(100% - 24px);
+  padding-left: 12px;
+  color: grey;
+  background-color: rgba(0, 0, 0, 0.6);
+}
 /*
-* Стили компонента Buton (Load more)
+* Стили компонента Button (Load more)
 */
 .Button {
   padding: 8px 16px;

@@ -23,7 +23,13 @@ export default class Button extends Component {
     isHidden: false,
   } 
   
-  
+  componentDidMount() { 
+    this.setState({
+      name: this.props.name,
+      nameDisable: this.props.nameDisable,
+      isHidden: this.props.isHidden,
+    })
+  }
   
   getButton(selector) {
     return document.querySelector(selector)
@@ -48,11 +54,15 @@ export default class Button extends Component {
     this.button.textContent = this.name;
   }
 
+  onLoadMore = () => { 
+    
+  }
+
   render() { 
     const { name } = this.state;
 
     return (
-      <button className="Button" type="button">{ name }</button>
+      <button className="Button" type="button" onClick={this.onLoadMore }>{ name }</button>
     )
   }
 

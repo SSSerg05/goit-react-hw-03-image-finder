@@ -67,8 +67,11 @@ export class Modal extends Component {
           
           { !isLoading && this.props.children }
           
-          <p>{ !isLoading && tags }</p>
-        
+          { !isLoading &&
+            <div className="modal-title">
+              { tags }
+            </div>
+          }
         </div>
         
       </div>

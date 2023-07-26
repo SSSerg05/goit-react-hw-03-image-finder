@@ -113,7 +113,7 @@ export class App extends Component {
 
     return (
       <div className="App">
-        <Searchbar className="Searchbar" onSubmit={ this.handleFormSubmit } />
+        <Searchbar onSubmit={ this.handleFormSubmit } />
 
         { isLoading && <h2>Loading...</h2>}
         
@@ -124,9 +124,13 @@ export class App extends Component {
             />
         }
 
-        { !isLoading && <Button></Button>
-
-        }
+        { searchQuery && !isLoading && (
+            <Button
+              name={"Load More"}
+              nameDisable={"Loading..."}
+              isHidden={false}
+            />
+        )}
 
         {
           showModal && (
@@ -135,7 +139,7 @@ export class App extends Component {
               tags={ tagsSelectedImage }
               onClose={ this.toggleModal }
             > 
-              <button type="button" onClick={ this.toggleModal }>
+              <button className="modal-button-close" type="button" onClick={ this.toggleModal }>
                 Close
               </button>
             </Modal>
