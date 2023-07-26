@@ -6,7 +6,7 @@ import { ListGallery } from "./ImageGallery/ListGallery";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
 import { fetchData } from '../services/API';
-import Button from "./Button/Button";
+// import Button from "./Button/Button";
 
 
 export class App extends Component {
@@ -18,7 +18,7 @@ export class App extends Component {
     showModal: false,
     isLoading: false,
     error: null,
-    page: 0,
+    page: 1,
     total: 0,
   }
 
@@ -33,14 +33,15 @@ export class App extends Component {
 
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
     try {
+      const {searchQuery, page} = this.state;
       this.setState({ isLoading: true });
 
-      const  responce = await fetchData(this.state.searchQuery);
+      const  responce = await fetchData(searchQuery, page);
       console.log(responce.hits);
 
       this.setState({ imagesGallery: responce.hits, isLoading: false  });
       this.setState({ total: responce.totalHits });
-      this.incrementPage();
+      this.resetPage();
 
     } catch (error) {
       this.setState({ error: true, isLoading: false });
@@ -53,21 +54,33 @@ export class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
+    const prevPage = prevState.page;
+    const nextPage = this.state.page;
     const prevQuery = prevState.searchQuery;
     const nextQuery = this.state.searchQuery;
 
-    if (prevQuery !== nextQuery) {
+    if (prevQuery !== nextQuery || prevPage !== nextPage) {
       try {
+        const {searchQuery, page} = this.state;
         this.setState({ isLoading: true });
+        const responce = await fetchData(searchQuery, page); 
 
-        console.log('prevQuery:', prevQuery);
-        console.log('nextQuery:', nextQuery);
 
-        const responce = await fetchData(this.state.searchQuery); 
-        this.setState({ imagesGallery: responce.hits });
+        if (prevQuery !== nextQuery) {
+        
+          this.setState({ imagesGallery: responce.hits });
+        
+        } else if (prevPage !== nextPage) {
+          
+          this.setState(({ imagesGallery }) => ({
+            imagesGallery: [...imagesGallery, responce.hits ], 
+          }));
+
+        }
+
         this.setState({ total: responce.totalHits });
         
-        this.incrementPage();
+        // this.incrementPage();
 
       } catch (error) {
         this.setState({ error: `Server don't repeate. ` + error });
@@ -79,12 +92,13 @@ export class App extends Component {
   }
 
   incrementPage() {
-    this.page++;
+    const newPage = this.state.page + 1;
+    this.setState({ page: newPage });
   }
 
   resetPage() { 
-    this.page = 1;
-    this.total = 0;
+    this.setState({page: 1})
+    this.setState({total: 0})
   }
 
 
@@ -96,6 +110,9 @@ export class App extends Component {
     this.toggleModal();
   }
 
+  onLoadMore = () => {
+    this.incrementPage();
+  }
 
   handleFormSubmit = searchQuery => { 
     this.setState({ searchQuery })
@@ -125,11 +142,14 @@ export class App extends Component {
         }
 
         { searchQuery && !isLoading && (
-            <Button
-              name={"Load More"}
-              nameDisable={"Loading..."}
-              isHidden={false}
-            />
+          <button className="Button" type="button" onClick={ this.onLoadMore }>
+            Load More
+          </button>
+            // <Button 
+            //   name={"Load More"}
+            //   nameDisable={"Loading..."}
+            //   isHidden={false}
+            // />
         )}
 
         {
@@ -139,7 +159,7 @@ export class App extends Component {
               tags={ tagsSelectedImage }
               onClose={ this.toggleModal }
             > 
-              <button className="modal-button-close" type="button" onClick={ this.toggleModal }>
+              <button className="Modal-button-close" type="button" onClick={ this.toggleModal }>
                 Close
               </button>
             </Modal>

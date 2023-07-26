@@ -10,11 +10,10 @@ export class Modal extends Component {
     isLoading: false,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // console.log('Open modal didMount');
     this.setState({ isLoading: true });
     window.addEventListener('keydown', this.handleKeyDown);
-    this.setState({ isLoading: false });
   }
 
 
@@ -27,10 +26,8 @@ export class Modal extends Component {
   componentDidUpdate(prevProps, prevState) {
     const oldProps = prevProps.src;
     const nextProps = this.props.src;
-    console.log('oldProps', oldProps);
-    console.log('nextProps',nextProps);
 
-    if(prevProps.src !== this.props.src) {
+    if(oldProps !== nextProps) {
       this.setState({ isLoading : false });
     }
   }
@@ -63,12 +60,12 @@ export class Modal extends Component {
 
           { isLoading && <p>Loading...</p> }
           
-          <img src={ src } alt={ tags } />
+          <img className="Modal-image" src={ src } alt={ tags } />
           
           { !isLoading && this.props.children }
           
           { !isLoading &&
-            <div className="modal-title">
+            <div className="Modal-title">
               { tags }
             </div>
           }

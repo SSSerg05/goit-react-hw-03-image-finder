@@ -180,14 +180,14 @@ img {
   max-height: calc(100vh - 24px);
 }
 
-.modal-button-close {
+.Modal-button-close {
     position: absolute;
-    top: 12px;
+    top: 64px;
     right: 12px;
     border-radius: 4px;
 }
 
-.modal-title {
+.Modal-title {
   position: absolute;
   bottom: 4px;
   left: 12px;
@@ -196,6 +196,14 @@ img {
   color: grey;
   background-color: rgba(0, 0, 0, 0.6);
 }
+
+.Modal-image {
+  width: 100%;
+  height: calc(100vh - 48px);
+  object-fit: cover;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /*
 * Стили компонента Button (Load more)
 */
