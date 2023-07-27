@@ -53,11 +53,8 @@ export class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const prevPage = prevState.page;
-    const prevQuery = prevState.searchQuery;
-
-    const nextPage = this.state.page;
-    const nextQuery = this.state.searchQuery;
+    const { page: prevPage, searchQuery: prevQuery } = prevState;
+    const { page: nextPage, searchQuery: nextQuery } = this.state;
 
     if (prevQuery !== nextQuery || prevPage !== nextPage) {
       try {
