@@ -5,8 +5,7 @@ import { ListGallery } from "./ImageGallery/ListGallery";
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
-import { fetchData } from '../services/API';
-// import Button from "./Button/Button";
+import { fetchData } from '../services/Api';
 
 
 export class App extends Component {
@@ -55,8 +54,9 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     const prevPage = prevState.page;
-    const nextPage = this.state.page;
     const prevQuery = prevState.searchQuery;
+
+    const nextPage = this.state.page;
     const nextQuery = this.state.searchQuery;
 
     if (prevQuery !== nextQuery || prevPage !== nextPage) {
@@ -73,7 +73,7 @@ export class App extends Component {
         } else if (prevPage !== nextPage) {
           
           this.setState(({ imagesGallery }) => ({
-            imagesGallery: [...imagesGallery, responce.hits ], 
+            imagesGallery: [ ...this.state.imagesGallery, ...responce.hits ], 
           }));
 
         }
@@ -92,8 +92,9 @@ export class App extends Component {
   }
 
   incrementPage() {
-    const newPage = this.state.page + 1;
-    this.setState({ page: newPage });
+    this.setState(prevState => ({ 
+      page: prevState.page + 1,
+    }))
   }
 
   resetPage() { 
