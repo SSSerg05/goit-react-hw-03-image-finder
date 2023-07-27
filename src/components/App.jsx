@@ -64,7 +64,7 @@ export class App extends Component {
 
 
         if (prevQuery !== nextQuery) {
-        
+          this.resetPage();
           this.setState({ imagesGallery: responce.hits });
         
         } else if (prevPage !== nextPage) {
@@ -95,8 +95,8 @@ export class App extends Component {
   }
 
   resetPage() { 
-    this.setState({page: 1})
-    this.setState({total: 0})
+    this.setState({
+      page: 1, total: 0, isLoading: false });
   }
 
 
@@ -130,7 +130,7 @@ export class App extends Component {
       <div className="App">
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
-        { isLoading && <h2>Loading...</h2>}
+        {/* { isLoading && <h2>Loading...</h2>} */}
         
         {
           !isLoading && searchQuery && <ListGallery
