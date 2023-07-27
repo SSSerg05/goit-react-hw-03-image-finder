@@ -28,64 +28,45 @@ export class App extends Component {
     }))
   }
 
-  async componentDidMount() {
-
+  componentDidMount() {
     //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
-    try {
-      const {searchQuery, page} = this.state;
-      this.setState({ isLoading: true });
-
-      const  responce = await fetchData(searchQuery, page);
-      console.log(responce.hits);
-
-      this.setState({ imagesGallery: responce.hits, isLoading: false  });
-      this.setState({ total: responce.totalHits });
-      this.resetPage();
-
-    } catch (error) {
-      this.setState({ error: true, isLoading: false });
-      console.log(error);
-    }
-    finally {
-      this.setState({ isLoading: false });
-    }
-
+    this.resetPage();
   }
 
   async componentDidUpdate(prevProps, prevState) {
     const { page: prevPage, searchQuery: prevQuery } = prevState;
     const { page: nextPage, searchQuery: nextQuery } = this.state;
 
-    if (prevQuery !== nextQuery || prevPage !== nextPage) {
-      try {
-        const {searchQuery, page} = this.state;
+    try {
+      let responce = null;
+      if ( prevQuery !== nextQuery ) {
         this.setState({ isLoading: true });
-        const responce = await fetchData(searchQuery, page); 
+        responce = await fetchData(nextQuery, nextPage); 
 
-
-        if (prevQuery !== nextQuery) {
-          this.resetPage();
-          this.setState({ imagesGallery: responce.hits });
-        
-        } else if (prevPage !== nextPage) {
-          
-          this.setState(({ imagesGallery }) => ({
-            imagesGallery: [ ...this.state.imagesGallery, ...responce.hits ], 
-          }));
-
-        }
-
+        this.resetPage();
+        this.setState({ imagesGallery: responce.hits });
         this.setState({ total: responce.totalHits });
-        
-        // this.incrementPage();
+        return;
+      }  
 
-      } catch (error) {
-        this.setState({ error: `Server don't repeate. ` + error });
+      if ( (prevPage !== nextPage) ) {
+        this.setState({ isLoading: true });
+        responce = await fetchData(nextQuery, nextPage); 
+
+        this.setState(({ imagesGallery }) => ({
+          imagesGallery: [ ...prevState.imagesGallery, ...responce.hits ], 
+        }));
+        
       }
-      finally {
+
+      
+    } catch (error) {
+      this.setState({ error: `Server don't repeate. ` + error });
+      console.log(error);
+    }
+    finally {
         this.setState({ isLoading: false });
-      }
-    }      
+    }
   }
 
   incrementPage() {
@@ -96,7 +77,7 @@ export class App extends Component {
 
   resetPage() { 
     this.setState({
-      page: 1, total: 0, isLoading: false });
+      imagesGallery: [], page: 1, total: 0, isLoading: false });
   }
 
 
