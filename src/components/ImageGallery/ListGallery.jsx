@@ -10,7 +10,7 @@ export const ListGallery = ({ gallery, onSelect }) => {
         gallery.map(item =>
           <li key={item.id} onClick={() => onSelect(item.largeImageURL, item.tags)}>
             <ItemGallery
-              src={item.previewURL}
+              src={item.webformatURL}
               alt={item.tags}
             />
           </li>

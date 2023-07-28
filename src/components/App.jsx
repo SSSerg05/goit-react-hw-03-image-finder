@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ColorRing } from "react-loader-spinner";
 
 import "../index.css"
 import { ListGallery } from "./ImageGallery/ListGallery";
@@ -11,7 +12,7 @@ import { fetchData } from '../services/Api';
 export class App extends Component {
   
   state = {
-    imagesGallery: null, // dataGallery.hits,
+    imagesGallery: [], // dataGallery.hits,
     searchQuery: null,
     selectedImage: null,
     showModal: false,
@@ -37,37 +38,56 @@ export class App extends Component {
     const { page: prevPage, searchQuery: prevQuery } = prevState;
     const { page: nextPage, searchQuery: nextQuery } = this.state;
 
-    try {
-      let responce = null;
-      if ( prevQuery !== nextQuery ) {
-        this.setState({ isLoading: true });
-        responce = await fetchData(nextQuery, nextPage); 
-
+    // console.log(prevQuery, nextQuery, prevPage, nextPage);
+    if (prevQuery !== nextQuery) {
+      try {
+        const data = await this.updateData(nextQuery, nextPage); 
         this.resetPage();
-        this.setState({ imagesGallery: responce.hits });
-        this.setState({ total: responce.totalHits });
-        return;
-      }  
-
-      if ( (prevPage !== nextPage) ) {
-        this.setState({ isLoading: true });
-        responce = await fetchData(nextQuery, nextPage); 
-
-        this.setState(({ imagesGallery }) => ({
-          imagesGallery: [ ...prevState.imagesGallery, ...responce.hits ], 
-        }));
+        if (data.length > 0) {
+          this.setState({ imagesGallery: data });
+        }
+      } catch (error) {
         
       }
+    }  
 
-      
-    } catch (error) {
-      this.setState({ error: `Server don't repeate. ` + error });
-      console.log(error);
-    }
-    finally {
-        this.setState({ isLoading: false });
+    if ((prevPage !== nextPage)) {
+      try {
+        const data = await this.updateData (nextQuery, nextPage);
+        if (data.length > 0) {
+          this.setState(({ imagesGallery }) => ({
+            imagesGallery: [...this.state.imagesGallery, ...data],
+          }));
+        }
+      } catch (error) {
+        
+      }
     }
   }
+
+
+  async updateData(query, page) { 
+    let responce = [];
+    try {
+
+      this.setState({ isLoading: true });
+    
+      responce = await fetchData(query, page); 
+      this.setState({ total: responce.totalHits });
+
+      return responce.hits;
+
+    } catch (error) {
+      this.setState({ error: `Server don't repeate. ` + error });
+      console.log(error);      
+    }
+    finally {
+      this.setState({ isLoading: false });
+    }
+
+    return responce;
+  }
+
 
   incrementPage() {
     this.setState(prevState => ({ 
@@ -77,7 +97,7 @@ export class App extends Component {
 
   resetPage() { 
     this.setState({
-      imagesGallery: [], page: 1, total: 0, isLoading: false });
+      imagesGallery: [], page: 1, total: 0, isLoading: false, error: null });
   }
 
 
@@ -111,7 +131,18 @@ export class App extends Component {
       <div className="App">
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
-        {/* { isLoading && <h2>Loading...</h2>} */}
+        { isLoading && <h2>Loading...</h2>}
+        { isLoading && <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+          />
+        }
+
         
         {
           !isLoading && searchQuery && <ListGallery
@@ -124,11 +155,6 @@ export class App extends Component {
           <button className="Button" type="button" onClick={ this.onLoadMore }>
             Load More
           </button>
-            // <Button 
-            //   name={"Load More"}
-            //   nameDisable={"Loading..."}
-            //   isHidden={false}
-            // />
         )}
 
         {

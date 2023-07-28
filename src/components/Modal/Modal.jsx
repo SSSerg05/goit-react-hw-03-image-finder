@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ColorRing } from "react-loader-spinner";
 import { createPortal } from "react-dom";
 
 
@@ -7,12 +8,13 @@ const modalRoot = document.querySelector('#modal-root');
 export class Modal extends Component {
   
   state = {
-    isLoading: false,
+    isLoading: null,
+    isVisible: null,
   }
 
-  async componentDidMount() {
-    // console.log('Open modal didMount');
+  componentDidMount() {
     this.setState({ isLoading: true });
+    // this.setState({ isVisible: true });
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -20,15 +22,19 @@ export class Modal extends Component {
   componentWillUnmount() {
     // console.log('close modal willUnmount');
     window.removeEventListener('keydown', this.handleKeyDown)
+    this.setState({ isLoading: null, isVisible: null });
   }
 
 
   componentDidUpdate(prevProps, prevState) {
-    const oldProps = prevProps.src;
-    const nextProps = this.props.src;
+    const oldLoading = prevState.isLoading;
+    const nextLoading = this.state.isLoading;
 
-    if(oldProps !== nextProps) {
-      this.setState({ isLoading : false });
+    console.log(oldLoading, nextLoading, prevState.isVisible, this.state.isVisible);
+    
+    if(oldLoading !== nextLoading) {
+      this.setState({ isVisible: true });
+      this.setState({ isLoading: false });
     }
   }
 
@@ -51,7 +57,7 @@ export class Modal extends Component {
 
   render() {
     const { src, tags } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, isVisible } = this.state;
     
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
@@ -59,12 +65,22 @@ export class Modal extends Component {
         <div className="BoxModal">
 
           { isLoading && <p>Loading...</p> }
+          { isLoading && <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              />
+          }
           
           <img className="Modal-image" src={ src } alt={ tags } />
           
-          { !isLoading && this.props.children }
+          { !isLoading && isVisible && this.props.children }
           
-          { !isLoading &&
+          { !isLoading && isVisible && 
             <div className="Modal-title">
               { tags }
             </div>
