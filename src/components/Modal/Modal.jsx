@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { createPortal } from "react-dom";
+// import axios from "axios";
 
 
 const modalRoot = document.querySelector('#modal-root');
@@ -9,13 +10,43 @@ export class Modal extends Component {
   
   state = {
     isLoading: null,
-    isVisible: null,
+    source: "",
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true });
+
     // this.setState({ isVisible: true });
     window.addEventListener('keydown', this.handleKeyDown);
+
+    this.setState({ source: this.loadLargeImage()});
+  }
+
+  loadLargeImage = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+      const response = await fetch(this.props.src);
+      
+      if (!response.ok) {
+        throw new Error("Network response was not OK");
+      }
+
+      const myBlob = await response.blob();
+
+      this.setState({ source: URL.createObjectURL(myBlob) });
+
+    } catch (error) {
+      console.error("There has been a problem with your fetch operation:", error);
+    } finally {
+      this.setState({isLoading: false});
+    }
+
+    // fetch('https://images.unsplash.com/photo-1490730141103-6cac27aaab94')
+    // .then(response => response.blob())
+    // .then((image) => {
+    //   setUrl(URL.createObjectURL(image));
+    // });
+   
   }
 
 
@@ -25,18 +56,6 @@ export class Modal extends Component {
     this.setState({ isLoading: null, isVisible: null });
   }
 
-
-  componentDidUpdate(prevProps, prevState) {
-    const oldLoading = prevState.isLoading;
-    const nextLoading = this.state.isLoading;
-
-    console.log(oldLoading, nextLoading, prevState.isVisible, this.state.isVisible);
-    
-    if(oldLoading !== nextLoading) {
-      this.setState({ isVisible: true });
-      this.setState({ isLoading: false });
-    }
-  }
 
     // close modal for press in ESC
   handleKeyDown = e => {
@@ -56,8 +75,8 @@ export class Modal extends Component {
 
 
   render() {
-    const { src, tags } = this.props;
-    const { isLoading, isVisible } = this.state;
+    const { tags } = this.props;
+    const { isLoading, source } = this.state;
     
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
@@ -76,11 +95,11 @@ export class Modal extends Component {
               />
           }
           
-          <img className="Modal-image" src={ src } alt={ tags } />
+          { !isLoading && <img className="Modal-image" src={ source } alt={ tags } /> }
           
-          { !isLoading && isVisible && this.props.children }
+          { !isLoading && this.props.children }
           
-          { !isLoading && isVisible && 
+          { !isLoading && 
             <div className="Modal-title">
               { tags }
             </div>

@@ -131,34 +131,31 @@ export class App extends Component {
       <div className="App">
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
-        { isLoading && <h2>Loading...</h2>}
-        { isLoading && <ColorRing
+         { isLoading && <ColorRing
             visible={true}
             height="80"
             width="80"
             ariaLabel="blocks-loading"
-            wrapperStyle={{}}
+            wrapperStyle={{margin: "0 auto"}}
             wrapperClass="blocks-wrapper"
             colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
           />
         }
 
         
-        {
-          !isLoading && searchQuery && <ListGallery
+        { !isLoading && searchQuery && <ListGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />
         }
 
-        { searchQuery && !isLoading && (
+        { searchQuery && (
           <button className="Button" type="button" onClick={ this.onLoadMore }>
-            Load More
+            { isLoading ? 'Loading...' : 'Load More' }
           </button>
         )}
 
-        {
-          showModal && (
+        { showModal && (
             <Modal
               src={ selectedImage }
               tags={ tagsSelectedImage }
