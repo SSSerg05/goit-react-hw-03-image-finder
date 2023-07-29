@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import "../index.css"
-import { ListGallery } from "./ImageGallery/ListGallery";
+import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { toast } from 'react-toastify';
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
@@ -156,7 +156,7 @@ export class App extends Component {
         { error && <div>{ error }</div> }
 
 
-        { !error && !isLoading && searchQuery && <ListGallery
+        { !error && !isLoading && searchQuery && <ImageGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />

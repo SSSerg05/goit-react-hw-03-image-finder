@@ -1,7 +1,7 @@
 import { ItemGallery } from "./ItemGallery/ItemGallery"
 
 
-export const ListGallery = ({ gallery, onSelect }) => { 
+export const ImageGallery = ({ gallery, onSelect }) => { 
 
 
   return (
