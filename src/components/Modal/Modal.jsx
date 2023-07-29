@@ -83,7 +83,6 @@ export class Modal extends Component {
        
         <div className="BoxModal">
 
-          { isLoading && <p>Loading...</p> }
           { isLoading && <ColorRing
                 visible={true}
                 height="80"

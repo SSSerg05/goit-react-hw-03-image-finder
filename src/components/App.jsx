@@ -42,7 +42,9 @@ export class App extends Component {
     if (prevQuery !== nextQuery) {
       try {
         const data = await this.updateData(nextQuery, nextPage); 
+
         this.resetPage();
+
         if (data.length > 0) {
           this.setState({ imagesGallery: data });
         }
@@ -54,11 +56,13 @@ export class App extends Component {
     if ((prevPage !== nextPage)) {
       try {
         const data = await this.updateData (nextQuery, nextPage);
+
         if (data.length > 0) {
           this.setState(({ imagesGallery }) => ({
             imagesGallery: [...this.state.imagesGallery, ...data],
           }));
         }
+
       } catch (error) {
         
       }
@@ -74,6 +78,11 @@ export class App extends Component {
     
       responce = await fetchData(query, page); 
       this.setState({ total: responce.totalHits });
+
+      if (responce.hits.length === 0) {
+        this.setState({ error: `Gallery empty` });
+        throw new Error("Gallery empty");
+      }
 
       return responce.hits;
 
@@ -97,7 +106,12 @@ export class App extends Component {
 
   resetPage() { 
     this.setState({
-      imagesGallery: [], page: 1, total: 0, isLoading: false, error: null });
+      imagesGallery: [], 
+      page: 1, 
+      total: 0, 
+      isLoading: false, 
+      error: null,
+    });
   }
 
 
@@ -125,6 +139,7 @@ export class App extends Component {
       showModal,
       isLoading,
       searchQuery,
+      error,
     } = this.state; 
 
     return (
@@ -148,8 +163,9 @@ export class App extends Component {
             onSelect={ this.onSelectImage }
             />
         }
+        {error && <div>{error}</div>}
 
-        { searchQuery && (
+        { searchQuery && imagesGallery.length > 0 && (
           <button className="Button" type="button" onClick={ this.onLoadMore }>
             { isLoading ? 'Loading...' : 'Load More' }
           </button>
