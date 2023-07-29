@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { ColorRing } from "react-loader-spinner";
 
 import "../index.css"
 import { ListGallery } from "./ImageGallery/ListGallery";
+import { toast } from 'react-toastify';
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
+import { Loader } from "./Loader/Loader";
 import { fetchData } from '../services/Api';
 
 
@@ -49,7 +50,7 @@ export class App extends Component {
           this.setState({ imagesGallery: data });
         }
       } catch (error) {
-        
+        console.log(error);
       }
     }  
 
@@ -64,7 +65,7 @@ export class App extends Component {
         }
 
       } catch (error) {
-        
+        console.log(error);
       }
     }
   }
@@ -88,7 +89,6 @@ export class App extends Component {
 
     } catch (error) {
       this.setState({ error: `Server don't repeate. ` + error });
-      console.log(error);      
     }
     finally {
       this.setState({ isLoading: false });
@@ -127,6 +127,11 @@ export class App extends Component {
     this.incrementPage();
   }
 
+  onError = (error) => {
+    toast.error(error);
+    console.log(error);
+  }
+
   handleFormSubmit = searchQuery => { 
     this.setState({ searchQuery })
   }
@@ -144,33 +149,26 @@ export class App extends Component {
 
     return (
       <div className="App">
+      
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
-         { isLoading && <ColorRing
-            visible={true}
-            height="80"
-            width="80"
-            ariaLabel="blocks-loading"
-            wrapperStyle={{margin: "0 auto"}}
-            wrapperClass="blocks-wrapper"
-            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-          />
-        }
+        { isLoading && <Loader/> }
+        { error && <div>{ error }</div> }
 
-        
-        { !isLoading && searchQuery && <ListGallery
+
+        { !error && !isLoading && searchQuery && <ListGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />
         }
-        
-        { error && <div>{error}</div> }
 
-        { searchQuery && imagesGallery.length > 0 && (
+
+        { !error && searchQuery && imagesGallery.length > 0 && (
           <button className="Button" type="button" onClick={ this.onLoadMore }>
             { isLoading ? 'Loading...' : 'Load More' }
           </button>
         )}
+
 
         { showModal && (
             <Modal
