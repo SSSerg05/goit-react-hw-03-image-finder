@@ -163,7 +163,8 @@ export class App extends Component {
             onSelect={ this.onSelectImage }
             />
         }
-        {error && <div>{error}</div>}
+        
+        { error && <div>{error}</div> }
 
         { searchQuery && imagesGallery.length > 0 && (
           <button className="Button" type="button" onClick={ this.onLoadMore }>
