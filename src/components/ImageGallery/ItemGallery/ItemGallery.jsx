@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 
 export const ItemGallery = ({ src, alt }) => { 
 
@@ -9,3 +9,8 @@ export const ItemGallery = ({ src, alt }) => {
   );
   
 }
+
+ItemGallery.propTypes = {
+  alt: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
+};
