@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { createPortal } from "react-dom";
+import PropTypes from 'prop-types';
 
 import { Loader } from "components/Loader/Loader";
 
@@ -10,7 +11,7 @@ export class Modal extends Component {
   
   state = {
     isLoading: null,
-    source: "",
+    source: null,
   }
 
   componentDidMount() {
@@ -104,3 +105,8 @@ export class Modal extends Component {
     , modalRoot)
   };
 }
+
+Modal.propTypes = {
+  isLoading : PropTypes.bool,
+  source: PropTypes.object,
+};

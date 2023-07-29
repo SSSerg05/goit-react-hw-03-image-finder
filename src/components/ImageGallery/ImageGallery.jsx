@@ -22,7 +22,8 @@ export const ImageGallery = ({ gallery, onSelect }) => {
 }
 
 ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(
+  onSelect: PropTypes.func.isRequired,
+  gallery: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       tags: PropTypes.string.isRequired,
