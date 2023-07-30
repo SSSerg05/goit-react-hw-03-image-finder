@@ -114,7 +114,7 @@ export class App extends Component {
         { error && <div>{ error }</div> }
 
 
-        { !error && !isLoading && searchQuery && <ImageGallery
+        { imagesGallery.length && <ImageGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />
