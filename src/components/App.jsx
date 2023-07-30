@@ -23,97 +23,43 @@ export class App extends Component {
     total: 0,
   }
 
-  // відкриття / закриття модалки
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal
-    }))
-  }
-
-  componentDidMount() {
-    //https://pixabay.com/api/?q=cat&key=36214966-0d101d8d6f502ad642532aad3
-    this.resetPage();
-  }
 
   async componentDidUpdate(prevProps, prevState) {
     const { page: prevPage, searchQuery: prevQuery } = prevState;
-    const { page: nextPage, searchQuery: nextQuery } = this.state;
+    const { page: nextPage, searchQuery: nextQuery, searchQuery, page, error } = this.state;
 
     // console.log(prevQuery, nextQuery, prevPage, nextPage);
-    if (prevQuery !== nextQuery) {
+    if (prevQuery !== nextQuery || prevPage !== nextPage) {
+
+      this.setState({ isLoading: true, error: null });
+
       try {
-        const data = await this.updateData(nextQuery, nextPage); 
+        const data = await fetchData(searchQuery, page); 
+        this.setState({ total: data.totalHits });
 
-        this.resetPage();
-
-        if (data.length > 0) {
+        if (!data.hits.length) {
           this.setState({ imagesGallery: data });
+          throw new Error("Gallery empty");
         }
+
+        this.setState(({ prevState }) => ({
+          imagesGallery: [...prevState.imagesGallery, ...data.hits]
+        }));
+
       } catch (error) {
-        console.log(error);
+        this.setState({ error: error.message });
       }
+      finally {
+        this.setState({ isLoading: false });
+      }
+
+      if(prevState.error !== error && error) {
+        this.onError(error);
+      }
+
+
     }  
-
-    if ((prevPage !== nextPage)) {
-      try {
-        const data = await this.updateData (nextQuery, nextPage);
-
-        if (data.length > 0) {
-          this.setState(({ imagesGallery }) => ({
-            imagesGallery: [...this.state.imagesGallery, ...data],
-          }));
-        }
-
-      } catch (error) {
-        console.log(error);
-      }
-    }
   }
-
-
-  async updateData(query, page) { 
-    let responce = [];
-    try {
-
-      this.setState({ isLoading: true });
-    
-      responce = await fetchData(query, page); 
-      this.setState({ total: responce.totalHits });
-
-      if (responce.hits.length === 0) {
-        this.setState({ error: `Gallery empty` });
-        throw new Error("Gallery empty");
-      }
-
-      return responce.hits;
-
-    } catch (error) {
-      this.setState({ error: `Server don't repeate. ` + error });
-    }
-    finally {
-      this.setState({ isLoading: false });
-    }
-
-    return responce;
-  }
-
-
-  incrementPage() {
-    this.setState(prevState => ({ 
-      page: prevState.page + 1,
-    }))
-  }
-
-  resetPage() { 
-    this.setState({
-      imagesGallery: [], 
-      page: 1, 
-      total: 0, 
-      isLoading: false, 
-      error: null,
-    });
-  }
-
 
   onSelectImage = (link, tags) => { 
     this.setState({
@@ -123,17 +69,29 @@ export class App extends Component {
     this.toggleModal();
   }
 
+
   onLoadMore = () => {
-    this.incrementPage();
+    this.setState(prevState => ({ 
+      page: prevState.page + 1,
+    }))
   }
+
 
   onError = (error) => {
     toast.error(error);
     console.log(error);
   }
 
+
   handleFormSubmit = searchQuery => { 
-    this.setState({ searchQuery })
+    this.setState({ searchQuery, imagesGallery: [], page: 1, total: 0 })
+  }
+
+  // відкриття / закриття модалки
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal
+    }))
   }
 
   render() {
