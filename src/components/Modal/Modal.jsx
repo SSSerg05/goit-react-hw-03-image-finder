@@ -66,7 +66,6 @@ export class Modal extends Component {
           
           <img className="Modal-image" onLoad={ this.onLoadedLargeImage } src={ src } alt={ tags } />
           
-          {/* { !loaded && this.props.children } */}
           {!loaded &&
             <button className="Modal-button-close" type="button" onClick={this.handleBackdropClick}>
               Close
