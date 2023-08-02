@@ -75,7 +75,7 @@ export class App extends Component {
     }))
   }
 
-  // container in component Searchbar
+
   onError = (error) => {
     toast.error(error);
     console.log(error);
