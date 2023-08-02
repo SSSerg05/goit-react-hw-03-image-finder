@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 import "../index.css"
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Modal } from "./Modal/Modal";
@@ -26,7 +28,7 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     const { page: prevPage, searchQuery: prevQuery, } = prevState;
-    const { page: nextPage, searchQuery: nextQuery, error, } = this.state;
+    const { page: nextPage, searchQuery: nextQuery, } = this.state;
 
     // console.log(prevQuery, nextQuery, prevPage, nextPage);
     if (prevQuery !== nextQuery || prevPage !== nextPage) {
@@ -36,7 +38,7 @@ export class App extends Component {
       try {
         const data = await fetchData(nextQuery, nextPage); 
 
-        if (!data.hits.length) {
+        if (data.hits.length === 0) {
           throw new Error("Gallery empty");
         }
 
@@ -49,15 +51,11 @@ export class App extends Component {
 
       } catch (error) {
         this.setState({ error: error.message });
+        this.onError(error.message);
       }
       finally {
         this.setState({ isLoading: false });
       }
-
-      if(prevState.error !== error && error) {
-        this.onError(error);
-      }
-
 
     }  
   }
@@ -77,7 +75,7 @@ export class App extends Component {
     }))
   }
 
-
+  // container in component Searchbar
   onError = (error) => {
     toast.error(error);
     console.log(error);
@@ -102,17 +100,17 @@ export class App extends Component {
       tagsSelectedImage,
       showModal,
       isLoading,
-      searchQuery,
+      total,
       error,
     } = this.state; 
 
     return (
       <div className="App">
       
-        <Searchbar onSubmit={ this.handleFormSubmit } />
+        <Searchbar onSubmit={this.handleFormSubmit} />
+
 
         { isLoading && <Loader/> }
-        {/* { error && <div>{ this.onError(error) }</div> } */}
 
 
         {(imagesGallery.length > 0) && <ImageGallery
@@ -122,22 +120,26 @@ export class App extends Component {
         }
 
 
-        { !error && searchQuery && imagesGallery.length > 0 && (
+        { !isLoading && imagesGallery.length < total && (
           <button className="Button" type="button" onClick={ this.onLoadMore }>
-            { isLoading ? 'Loading...' : 'Load More' }
+            Load More
           </button>
         )}
 
-
+        
+        <ToastContainer
+            autoClose={2500}
+          theme="colored" />
+        
         { showModal && (
             <Modal
               src={ selectedImage }
               tags={ tagsSelectedImage }
               onClose={ this.toggleModal }
             > 
-              <button className="Modal-button-close" type="button" onClick={ this.toggleModal }>
+              {/* <button className="Modal-button-close" type="button" onClick={ this.toggleModal }>
                 Close
-              </button>
+              </button> */}
             </Modal>
         )}
         

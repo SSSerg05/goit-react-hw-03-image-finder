@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import PropTypes from 'prop-types';
 
 import { Loader } from "components/Loader/Loader";
+import { toast } from "react-toastify";
 
 
 const modalRoot = document.querySelector('#modal-root');
@@ -10,55 +11,27 @@ const modalRoot = document.querySelector('#modal-root');
 export class Modal extends Component {
   
   state = {
-    isLoading: null,
-    source: null,
+    loaded: false,
   }
 
   componentDidMount() {
-
-    // this.setState({ isVisible: true });
     window.addEventListener('keydown', this.handleKeyDown);
 
-    this.setState({ source: this.loadLargeImage()});
+    this.setState({ loaded: true });
   }
 
-  loadLargeImage = async () => {
-    this.setState({ isLoading: true });
-
-    try {
-      const response = await fetch(this.props.src);
-      
-      if (!response.ok) {
-        throw this.onError(new Error("Network response was not OK"));
-      }
-
-      const myBlob = await response.blob();
-
-      this.setState({ source: URL.createObjectURL(myBlob) });
-
-    } catch (error) {
-      this.onError("There has been a problem with your fetch operation:", error);
-    } finally {
-      this.setState({isLoading: false});
-    }
-
-    // fetch('https://images.unsplash.com/photo-1490730141103-6cac27aaab94')
-    // .then(response => response.blob())
-    // .then((image) => {
-    //   setUrl(URL.createObjectURL(image));
-    // });
-   
+  onLoadedLargeImage = () => {
+    this.setState({ loaded: false });
   }
 
 
   componentWillUnmount() {
-    // console.log('close modal willUnmount');
     window.removeEventListener('keydown', this.handleKeyDown)
     this.setState({ isLoading: null, isVisible: null });
   }
 
 
-    // close modal for press in ESC
+  // close modal for press in ESC
   handleKeyDown = e => {
     if (e.code === 'Escape') {
       // console.log("You press ESC");
@@ -67,7 +40,7 @@ export class Modal extends Component {
   }
 
   
-  // close modal for click in backdrop
+  // close modal for click in backdrop || button
   handleBackdropClick = e => { 
     if (e.currentTarget === e.target) { 
        this.props.onClose();
@@ -75,26 +48,31 @@ export class Modal extends Component {
   }
 
   onError = (error) => {
+    toast.error(error);
     console.log(error);
   }
 
 
   render() {
-    const { tags } = this.props;
-    const { isLoading, source } = this.state;
+    const { src, tags } = this.props;
+    const { loaded } = this.state;
     
     return createPortal(
       <div className="Overlay" onClick={ this.handleBackdropClick }>
        
         <div className="BoxModal">
 
-          { isLoading && <Loader /> }
+          {loaded && <Loader /> }
           
-          { !isLoading && <img className="Modal-image" src={ source } alt={ tags } /> }
+          <img className="Modal-image" onLoad={ this.onLoadedLargeImage } src={ src } alt={ tags } />
           
-          { !isLoading && this.props.children }
+          {/* { !loaded && this.props.children } */}
+          {!loaded &&
+            <button className="Modal-button-close" type="button" onClick={this.handleBackdropClick}>
+              Close
+            </button>}
           
-          { !isLoading && 
+          { !loaded && 
             <div className="Modal-title">
               { tags }
             </div>
