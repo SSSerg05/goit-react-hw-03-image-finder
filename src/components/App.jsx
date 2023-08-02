@@ -25,8 +25,8 @@ export class App extends Component {
 
 
   async componentDidUpdate(prevProps, prevState) {
-    const { page: prevPage, searchQuery: prevQuery } = prevState;
-    const { page: nextPage, searchQuery: nextQuery, searchQuery, page, error } = this.state;
+    const { page: prevPage, searchQuery: prevQuery, } = prevState;
+    const { page: nextPage, searchQuery: nextQuery, error, } = this.state;
 
     // console.log(prevQuery, nextQuery, prevPage, nextPage);
     if (prevQuery !== nextQuery || prevPage !== nextPage) {
@@ -34,17 +34,18 @@ export class App extends Component {
       this.setState({ isLoading: true, error: null });
 
       try {
-        const data = await fetchData(searchQuery, page); 
-        this.setState({ total: data.totalHits });
+        const data = await fetchData(nextQuery, nextPage); 
 
         if (!data.hits.length) {
-          this.setState({ imagesGallery: data });
           throw new Error("Gallery empty");
         }
 
-        this.setState(({ prevState }) => ({
-          imagesGallery: [...prevState.imagesGallery, ...data.hits]
-        }));
+        this.setState(
+          ( prevState ) => ({
+            imagesGallery: [ ...prevState.imagesGallery, ...data.hits],
+            total: data.totalHits,
+          })
+        )
 
       } catch (error) {
         this.setState({ error: error.message });
@@ -111,10 +112,10 @@ export class App extends Component {
         <Searchbar onSubmit={ this.handleFormSubmit } />
 
         { isLoading && <Loader/> }
-        { error && <div>{ error }</div> }
+        {/* { error && <div>{ this.onError(error) }</div> } */}
 
 
-        { imagesGallery.length && <ImageGallery
+        {(imagesGallery.length > 0) && <ImageGallery
             gallery={ imagesGallery }
             onSelect={ this.onSelectImage }
             />
