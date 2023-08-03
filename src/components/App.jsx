@@ -2,8 +2,8 @@ import React, { Component } from "react";
 
 import "../index.css"
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
@@ -56,8 +56,9 @@ export class App extends Component {
       finally {
         this.setState({ isLoading: false });
       }
-
+      return
     }  
+
   }
 
   onSelectImage = (link, tags) => { 
@@ -75,7 +76,8 @@ export class App extends Component {
     }))
   }
 
-  // container in component Searchbar
+
+  // container Toast in component Searchbar
   onError = (error) => {
     toast.error(error);
     console.log(error);
@@ -101,7 +103,6 @@ export class App extends Component {
       showModal,
       isLoading,
       total,
-      error,
     } = this.state; 
 
     return (
@@ -126,21 +127,13 @@ export class App extends Component {
           </button>
         )}
 
-        
-        <ToastContainer
-            autoClose={2500}
-          theme="colored" />
-        
+       
         { showModal && (
             <Modal
               src={ selectedImage }
               tags={ tagsSelectedImage }
               onClose={ this.toggleModal }
-            > 
-              {/* <button className="Modal-button-close" type="button" onClick={ this.toggleModal }>
-                Close
-              </button> */}
-            </Modal>
+            /> 
         )}
         
       </div>

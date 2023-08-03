@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import PropTypes from 'prop-types';
 
 import { Loader } from "components/Loader/Loader";
-import { toast } from "react-toastify";
 
 
 const modalRoot = document.querySelector('#modal-root');
@@ -27,7 +26,6 @@ export class Modal extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown)
-    this.setState({ isLoading: null, isVisible: null });
   }
 
 
@@ -45,11 +43,6 @@ export class Modal extends Component {
     if (e.currentTarget === e.target) { 
        this.props.onClose();
     }
-  }
-
-  onError = (error) => {
-    toast.error(error);
-    console.log(error);
   }
 
 
