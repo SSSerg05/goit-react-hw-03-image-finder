@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import "../index.css"
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 // import  dataGallery from "../data/gallery.json"
 import { Searchbar } from "./Searchbar/Searchbar";
