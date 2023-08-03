@@ -77,6 +77,7 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  isLoading : PropTypes.bool,
-  source: PropTypes.object,
+  src : PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  onClose : PropTypes.func.isRequired,
 };
